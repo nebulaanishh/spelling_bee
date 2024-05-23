@@ -5,5 +5,4 @@ scores = {
         'inner_letter': '',
         'outer_letters': [],
     }
-
 }

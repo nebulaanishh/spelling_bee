@@ -7,7 +7,6 @@ def load_pangram_data() -> dict:
     """ Loads the contents of pangram.json into pangram dict and return it """
 
     file_path = 'pangram.json'
-
     with open(file_path, 'r') as file:
         data = json.load(file)
     return data
@@ -15,7 +14,6 @@ def load_pangram_data() -> dict:
 
 def get_all_words() -> list:
     """ Returns a list of all words in english dictionary """ 
-
     english_vocab = set(w.lower() for w in nltk.corpus.words.words())
     all_words = [word for word in english_vocab if "s" not in word]
 
@@ -70,35 +68,48 @@ def generate_letters_for_spellbee(pangram, alphabet_weight) -> (str, list, str):
         
 
 
-def is_valid_word(word: str, session_id: str) -> bool:
+def is_valid_word(word: str, inner_letter: str, outer_letters: list[str]) -> bool:
     """ """
-    if word in scores.get(session_id).get('scored_words'):
-        return False
+    word = word.lower()
+    inner_letter= inner_letter.lower()
+    outer_letters = [letter.lower() for letter in outer_letters]
+
     all_words = get_all_words()
     if len(word) < 4:
         return False
-    if str in all_words:
+    if inner_letter not in word:
+        return False
+    for letter in word:
+        if (letter not in outer_letters) and letter != inner_letter :
+            return False
+        
+    if word in all_words:
         return True
     else:
         return False
 
-def score_word(word: str, session_id: str) -> int:
+def score_word(word: str, current_score: int) -> int:
     """ """
     pangram = load_pangram_data()
 
-    if not scores.get(session_id):
-        scores[session_id]['score'] = 0
-
     if word in pangram:
-        scores[session_id]['score'] += 15
+        current_score += 15
     # elif => logic for scoring rare words 
     elif len(word) == 4:
-        scores[session_id]['score'] += 1
+        current_score += 1
     else:
-        scores[session_id]['score'] += len(word)
+        current_score += len(word)
     
-    return scores[session_id]['score']
-    
+    return current_score
+
+def check_duplicate(word, session_id) -> bool:
+    """ Returns True if word has already been scored for the same session """
+
+    if word in scores.get(session_id, {}).get('scored_words', []):
+        return True
+    return False
+
+
 
 
 def initialize_session():

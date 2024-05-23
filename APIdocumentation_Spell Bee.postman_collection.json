@@ -1,0 +1,61 @@
+{
+	"info": {
+		"_postman_id": "5f300c22-f4b2-47cc-9e1a-486cf2620719",
+		"name": "Spell Bee",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "34790156"
+	},
+	"item": [
+		{
+			"name": "Validate and score word ",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"input_word\": \"camel\",\n    \"current_score\": \"10\",\n    \"inner_letter\": \"l\",\n    \"outer_letters\": \"['d','a','c','m','e','p']\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8000/letters/validate/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"letters",
+						"validate",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get New letters",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/letters/refresh",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"letters",
+						"refresh"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
